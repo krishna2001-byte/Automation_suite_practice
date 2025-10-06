@@ -1,0 +1,24 @@
+{
+  "name": "cypress-cucumber-poc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "cy:open": "cypress open test",
+    "npx cypress run": "cypress run",
+    "test": "cypress run"
+  },
+  "keywords": [],
+  "author": "Kuruhuru Krishna Rao",
+  "devDependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^22.2.0",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.5",
+    "cypress": "^13.5.0",
+    "cypress-mochawesome-reporter": "^3.8.2",
+    "esbuild": "^0.25.5",
+    "playwright-webkit": "^1.53.2"
+  },
+  "dependencies": {
+    "cypress-on-fix": "^1.1.0"
+  }
+}
