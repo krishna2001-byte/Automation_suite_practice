@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        CYPRESS_PROJECT = "Cypress_Automation_sute"
+        CYPRESS_PROJECT = "git_job" // root workspace folder
         REPORT_DIR = "cypress/reports/html"
         REPORT_FILE = "cypress-cucumber-poc-results.html"
         ZIP_NAME = "report.zip"
@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Install Dependencies') {
             steps {
-                dir("${CYPRESS_PROJECT}") {
+                dir("${CYPRESS_PROJECT}/Cypress_Automation_sute") {
                     bat 'npm install'
                     bat 'npx cypress install'
                 }
@@ -20,7 +20,7 @@ pipeline {
 
         stage('Run Cypress Tests') {
             steps {
-                dir("${CYPRESS_PROJECT}") {
+                dir("${CYPRESS_PROJECT}/Cypress_Automation_sute") {
                     bat 'npm run test'
                 }
             }
@@ -29,7 +29,7 @@ pipeline {
         stage('Verify Report') {
             steps {
                 dir("${CYPRESS_PROJECT}") {
-                    bat "dir \"${REPORT_DIR}\\${REPORT_FILE}\""
+                    bat "if exist \"${REPORT_DIR}\\${REPORT_FILE}\" (echo Report found) else (echo Report missing & exit /b 1)"
                 }
             }
         }
