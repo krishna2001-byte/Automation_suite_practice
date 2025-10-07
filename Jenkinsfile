@@ -35,13 +35,13 @@ pipeline {
 
         stage('Zip Report') {
             steps {
-                dir("${CYPRESS_PROJECT}") {
+                
                     bat """
                         powershell Remove-Item -Path \"${ZIP_NAME}\" -Force -ErrorAction SilentlyContinue
                         powershell Compress-Archive -Path \"${REPORT_DIR}/${REPORT_FILE}\" -DestinationPath \"${ZIP_NAME}\" -Force
                     """
-                    archiveArtifacts artifacts: "${CYPRESS_PROJECT}\\${ZIP_NAME}", allowEmptyArchive: false
-                }
+                    archiveArtifacts artifacts: "${CYPRESS_PROJECT}/${ZIP_NAME}", allowEmptyArchive: false
+                
             }
         }
 
