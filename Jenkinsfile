@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        CYPRESS_PROJECT = "git_job" // root workspace folder
+        CYPRESS_PROJECT = "Cypress_Automation_sute" // root workspace folder
         REPORT_DIR = "cypress/reports/html"
         REPORT_FILE = "cypress-cucumber-poc-results.html"
         ZIP_NAME = "report.zip"
@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Install Dependencies') {
             steps {
-                dir("${CYPRESS_PROJECT}/Cypress_Automation_sute") {
+                dir("${CYPRESS_PROJECT}") {
                     bat 'npm install'
                     bat 'npx cypress install'
                 }
@@ -20,7 +20,7 @@ pipeline {
 
         stage('Run Cypress Tests') {
             steps {
-                dir("${CYPRESS_PROJECT}/Cypress_Automation_sute") {
+                dir("${CYPRESS_PROJECT}") {
                     bat 'npm run test'
                 }
             }
@@ -35,13 +35,13 @@ pipeline {
 
         stage('Zip Report') {
             steps {
-                
+                dir("${CYPRESS_PROJECT}") {
                     bat """
                         powershell Remove-Item -Path \"${ZIP_NAME}\" -Force -ErrorAction SilentlyContinue
                         powershell Compress-Archive -Path \"${REPORT_DIR}/${REPORT_FILE}\" -DestinationPath \"${ZIP_NAME}\" -Force
                     """
-                    archiveArtifacts artifacts: "${CYPRESS_PROJECT}/${ZIP_NAME}", allowEmptyArchive: false
-                
+                    archiveArtifacts artifacts: "${CYPRESS_PROJECT}\\${ZIP_NAME}", allowEmptyArchive: false
+                }
             }
         }
 
