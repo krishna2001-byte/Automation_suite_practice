@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         CYPRESS_PROJECT = "Cypress_Automation_sute"
-        REPORT_DIR = "cypress/reports/html"
+        REPORT_DIR = "cypress\\reports\\html"
         REPORT_FILE = "cypress-cucumber-poc-results.html"
         ZIP_NAME = "report.zip"
     }
@@ -29,7 +29,7 @@ pipeline {
         stage('Verify Report') {
             steps {
                 dir("${CYPRESS_PROJECT}") {
-                    bat "dir ${REPORT_DIR}"
+                    bat "dir \"${REPORT_DIR}\""
                 }
             }
         }
@@ -38,7 +38,7 @@ pipeline {
             steps {
                 dir("${CYPRESS_PROJECT}") {
                     bat """
-                        powershell Compress-Archive -Path ${REPORT_DIR}\\${REPORT_FILE} -DestinationPath ${ZIP_NAME}
+                        powershell Compress-Archive -Path \"${REPORT_DIR}\\${REPORT_FILE}\" -DestinationPath \"${ZIP_NAME}\"
                     """
                     archiveArtifacts artifacts: "${ZIP_NAME}", allowEmptyArchive: false
                 }
@@ -47,7 +47,7 @@ pipeline {
 
         stage('Archive Raw Report') {
             steps {
-                archiveArtifacts artifacts: "${CYPRESS_PROJECT}/${REPORT_DIR}/${REPORT_FILE}", allowEmptyArchive: false
+                archiveArtifacts artifacts: "${CYPRESS_PROJECT}\\${REPORT_DIR}\\${REPORT_FILE}", allowEmptyArchive: false
             }
         }
     }
