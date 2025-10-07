@@ -28,26 +28,23 @@ pipeline {
 
         stage('Verify Report') {
             steps {
-                
-                    bat "if exist \"${REPORT_DIR}/${REPORT_FILE}\" (echo Report found) else (echo Report missing & exit /b 1)"
+                bat "dir ${CYPRESS_PROJECT}\\cypress\\reports\\html"
             }
         }
 
-        stage('Zip Report') {
-            steps {
-                dir("${CYPRESS_PROJECT}") {
-                    bat """
-                        powershell Remove-Item -Path \"${ZIP_NAME}\" -Force -ErrorAction SilentlyContinue
-                        powershell Compress-Archive -Path \"${REPORT_DIR}/${REPORT_FILE}\" -DestinationPath \"${ZIP_NAME}\" -Force
-                    """
-                    archiveArtifacts artifacts: "${CYPRESS_PROJECT}\\${ZIP_NAME}", allowEmptyArchive: false
-                }
-            }
-        }
+       stage('Zip Report') {
+    steps {
+        bat """
+            powershell Compress-Archive -Path ${CYPRESS_PROJECT}\\${REPORT_PATH} -DestinationPath ${CYPRESS_PROJECT}\\report.zip -Force
+        """
+        archiveArtifacts artifacts: "${CYPRESS_PROJECT}/report.zip", allowEmptyArchive: false
+    }
+}
+
 
         stage('Archive Raw Report') {
             steps {
-                archiveArtifacts artifacts: "${CYPRESS_PROJECT}\\${REPORT_DIR}\\${REPORT_FILE}", allowEmptyArchive: false
+                archiveArtifacts artifacts: "${CYPRESS_PROJECT}/${REPORT_PATH}", allowEmptyArchive: false
             }
         }
     }
