@@ -28,9 +28,8 @@ pipeline {
 
         stage('Verify Report') {
             steps {
-                dir("${CYPRESS_PROJECT}") {
-                    bat "if exist \"${REPORT_DIR}\\${REPORT_FILE}\" (echo Report found) else (echo Report missing & exit /b 1)"
-                }
+                
+                    bat "if exist \"${REPORT_DIR}/${REPORT_FILE}\" (echo Report found) else (echo Report missing & exit /b 1)"
             }
         }
 
