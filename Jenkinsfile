@@ -19,7 +19,7 @@ pipeline {
         stage('Run Cypress Tests') {
             steps {
                 dir("${CYPRESS_PROJECT}") {
-                    bat 'npm run test'
+                    bat 'npx cypress run'
                 }
             }
         }
