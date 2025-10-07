@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         CYPRESS_PROJECT = "Cypress_Automation_sute"
-        REPORT_DIR = "cypress\\reports\\html"
+        REPORT_DIR = "cypress/reports/html"
         REPORT_FILE = "cypress-cucumber-poc-results.html"
         ZIP_NAME = "report.zip"
     }
@@ -29,7 +29,7 @@ pipeline {
         stage('Verify Report') {
             steps {
                 dir("${CYPRESS_PROJECT}") {
-                    bat "dir \"${REPORT_DIR}\""
+                    bat "dir \"${REPORT_DIR}\\${REPORT_FILE}\""
                 }
             }
         }
@@ -38,9 +38,10 @@ pipeline {
             steps {
                 dir("${CYPRESS_PROJECT}") {
                     bat """
-                        powershell Compress-Archive -Path \"${REPORT_DIR}\\${REPORT_FILE}\" -DestinationPath \"${ZIP_NAME}\"
+                        powershell Remove-Item -Path \"${ZIP_NAME}\" -Force -ErrorAction SilentlyContinue
+                        powershell Compress-Archive -Path \"${REPORT_DIR}\\${REPORT_FILE}\" -DestinationPath \"${ZIP_NAME}\" -Force
                     """
-                    archiveArtifacts artifacts: "${ZIP_NAME}", allowEmptyArchive: false
+                    archiveArtifacts artifacts: "${CYPRESS_PROJECT}\\${ZIP_NAME}", allowEmptyArchive: false
                 }
             }
         }
@@ -59,7 +60,7 @@ pipeline {
                 body: """
                     <p><strong>${env.JOB_NAME}</strong> - Build #${env.BUILD_NUMBER} - <strong>${currentBuild.currentResult}</strong></p>
                     <p>✅ Console output: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
-                    <p>📄 Download the HTML report: <a href="${env.BUILD_URL}artifact/${ZIP_NAME}">Click here</a></p>
+                    <p>📄 Download the HTML report: <a href="${env.BUILD_URL}artifact/${CYPRESS_PROJECT}/${ZIP_NAME}">Click here</a></p>
                     <p>This zipped report can be opened in any browser for full rendering.</p>
                 """,
                 mimeType: 'text/html',
