@@ -29,6 +29,8 @@ module.exports = defineConfig({
 
       // ✅ Clean report folders before run
       on('before:run', () => {
+        console.log(`📁 __dirname is: ${__dirname}`);
+
         const htmlReportDir = path.join(__dirname, 'cypress', 'reports', 'html');
         const videosDir = path.join(htmlReportDir, 'videos');
         const jsonsDir = path.join(htmlReportDir, '.jsons');
